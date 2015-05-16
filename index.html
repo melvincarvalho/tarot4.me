@@ -1,0 +1,628 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <title>Daily Thoth</title>
+    <link rel="stylesheet" title="Standard" href="styles.css" type="text/css" media="screen" />
+
+
+    <script language="JavaScript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="contentflow.js"></script>
+    <script tyle="text/javascript">
+    
+var javascript_countdown = function () {
+	var time_left = 10; //number of seconds for countdown
+	var output_element_id = 'javascript_countdown_time';
+	var keep_counting = 1;
+	var no_time_left_message = 'Click for next card!';
+ 
+	function countdown() {
+		if(time_left < 2) {
+			keep_counting = 0;
+		}
+ 
+		time_left = time_left - 1;
+	}
+ 
+	function add_leading_zero(n) {
+		if(n.toString().length < 2) {
+			return '0' + n;
+		} else {
+			return n;
+		}
+	}
+ 
+	function format_output() {
+		var hours, minutes, seconds;
+		seconds = time_left % 60;
+		minutes = Math.floor(time_left / 60) % 60;
+		hours = Math.floor(time_left / 3600);
+ 
+		seconds = add_leading_zero( seconds );
+		minutes = add_leading_zero( minutes );
+		hours = add_leading_zero( hours );
+ 
+		return hours + ':' + minutes + ':' + seconds;
+	}
+ 
+	function show_time_left() {
+		document.getElementById(output_element_id).innerHTML = format_output();//time_left;
+	}
+ 
+	function no_time_left() {
+		document.getElementById(output_element_id).innerHTML = no_time_left_message;
+	}
+ 
+	return {
+		count: function () {
+			countdown();
+			show_time_left();
+		},
+		timer: function () {
+			javascript_countdown.count();
+ 
+			if(keep_counting) {
+				setTimeout("javascript_countdown.timer();", 1000);
+			} else {
+				no_time_left();
+			}
+		},
+		//Kristian Messer requested recalculation of time that is left
+		setTimeLeft: function (t) {
+			time_left = t;
+			if(keep_counting == 0) {
+				javascript_countdown.timer();
+			}
+		},
+		init: function (t, element_id) {
+			time_left = t;
+			output_element_id = element_id;
+			javascript_countdown.timer();
+		}
+	};
+}();
+ 
+
+    
+ Date.prototype.yyyymmdd = function() {
+   var yyyy = this.getFullYear().toString();
+   var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
+   var dd  = this.getDate().toString();
+   return yyyy + (mm[1]?mm:"0"+mm[0]) + (dd[1]?dd:"0"+dd[0]); // padding
+  };
+
+        var ran = (Math.floor(Math.random()*78));
+
+
+var d = new Date();
+var t = "d" + d.yyyymmdd();
+
+        if ( window.localStorage[t] ) {
+          //alert(window.localStorage[t]  );
+          $('#date').text(d.yyyymmdd());
+          ran = window.localStorage[t];
+        } else {
+          window.localStorage[t] = ran;        
+        }
+        var cf = new ContentFlow('contentFlow', {reflectionColor: "#000000", startItem : ran });
+
+
+$(function() {
+  $('#date').text(d.yyyymmdd());
+  $('#card').text('Today\'s Card - ' + $('.caption').get(window.localStorage[t]).firstChild.textContent );
+  $('#click').text(' - Next Card in - ');
+  var da = new Date();
+  var hours = da.getHours();
+  var minutes = da.getMinutes();
+  var seconds = da.getSeconds();
+  var left = 86400 - 3600*hours - 60*minutes - seconds;
+  
+  javascript_countdown.init(left, 'countdown');
+});
+
+
+        
+        
+ function playSound(soundfile) {
+//document.getElementById("dummy").innerHTML= "<embed src='shuffling-cards-1.mp3' hidden=true autostart=true loop=false>"; 
+
+var audio_file1 = document.getElementById('sound');
+audio_file1.play();
+
+
+
+ }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+function random() {
+  cf.moveTo(Math.floor(Math.random()*78));
+}        
+        
+function clear() {
+    cf.rmItem();
+}        
+        
+function history() {
+  var h = 'History\n\n';
+  //alert(h);
+  for (var i = 0; i < window.localStorage.length; i++){
+     h = h + window.localStorage.key(i) + ' : ' +  $('.caption').get( window.localStorage.getItem(window.localStorage.key(i)) ).firstChild.textContent + '\n\n';
+  }  
+  alert(h);
+}        
+        
+        
+        
+    </script>
+    
+<style>
+.caption {
+  font-size: 250%;
+}
+</style>    
+    
+</head>
+<body style="height: 100%">
+<div id="fb-root"></div>
+<script>
+  // Additional JS functions here
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '557059227645288', // App ID
+      channelUrl : 'http://tarot4.me/channel.html', // Channel File
+      status     : true, // check login status
+      cookie     : true, // enable cookies to allow the server to access the session
+      xfbml      : true  // parse XFBML
+    });
+
+    // Additional init code here
+
+FB.getLoginStatus(function(response) {
+  if (response.status === 'connected') {
+    // connected
+    console.log('Welcome!  Fetching your information.... ');
+    FB.api('/me', function(response) {
+        console.log('Good to see you, ' + response.name + '.');
+    });
+//alert('connected');
+  } else if (response.status === 'not_authorized') {
+    // not_authorized
+//login();
+  } else {
+    // not_logged_in
+//login();
+  }
+ });
+
+function login() {
+    FB.login(function(response) {
+        if (response.authResponse) {
+            // connected
+        } else {
+            // cancelled
+        }
+    });
+}
+
+  };
+
+  // Load the SDK Asynchronously
+  (function(d){
+     var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement('script'); js.id = id; js.async = true;
+     js.src = "//connect.facebook.net/en_US/all.js";
+     ref.parentNode.insertBefore(js, ref);
+   }(document));
+
+
+</script>
+
+<audio id="sound" style="display:none" src="./shuffling-cards-1.wav" controls="false" preload="auto" autobuffer autoplay="true"></audio>
+
+    <span id="dummy"></span>
+    
+    <ul style="width: 100%" id="menu">
+          <div class="fb-login-button"></div>
+          <span id="date" style="text-align: left ">Date | </span>
+          <span style="text-align: left "> | </span>
+        <li>
+          <span><a onclick='playSound()' href='javascript:cf.moveTo(Math.floor(Math.random()*78))' style='font-size: 200%' href="index.html">Thoth Tarot <span id="click">(Click for a Daily Card)</span><span id="countdown"></span></a></span>
+        </li>
+          <span style="text-align: right "> | </span>
+          <span id="card" style="text-align: right ">Card</span>
+    </ul>
+    
+    <div class="maincontent">
+
+        <p>
+        </p>
+
+    <!-- ===== FLOW ===== -->
+    <div style="height: 700px" id="contentFlow" class="ContentFlow">
+        <!-- should be plAce before flow so that contained images will be loaded first -->
+        <div class="loadIndicator"><div class="indicator"></div></div>
+
+        <div class="flow">
+
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=26" class="content" src="./images/wands1.jpg"/>
+                <div class="caption">Ace of wands : Initiative, passion, risk taking</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=30" class="content" src="./images/wands2.jpg"/>
+                <div class="caption">2 of wands : Control</div>
+                <div class="label">Control</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=34" class="content" src="./images/wands3.jpg"/>
+                <div class="caption">3 of wands : Virtue</div>
+                <div class="label">Virtue</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=38" class="content" src="./images/wands4.jpg"/>
+                <div class="caption">4 of wands : Completion</div>
+                <div class="label">Completion</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=42" class="content" src="./images/wands5.jpg"/>
+                <div class="caption">5 of wands : Strife</div>
+                <div class="label">Strife</div>
+            </div>
+            <div class="item">
+                <img href="http://tarot4.me/wiki/index.php/Six_of_Wands" class="content" src="./images/wands6.jpg"/>
+                <div class="caption">6 of wands : Victory</div>
+                <div class="label">Victory</div>
+            </div>
+            <div class="item">
+                <img href="http://tarot4.me/wiki/index.php/Seven_of_Wands" class="content" src="./images/wands7.jpg"/>
+                <div class="caption">7 of wands : Valour</div>
+                <div class="label">Bravery</div>
+            </div>
+            <div class="item">
+                <img href="http://tarot4.me/wiki/index.php/Eight_of_Wands" class="content" src="./images/wands8.jpg"/>
+                <div class="caption">8 of wands : Swiftness </div>
+                <div class="label">Swiftness</div>
+            </div>
+            <div class="item">
+                <img href="http://tarot4.me/wiki/index.php/Nine_of_Wands" class="content" src="./images/wands9.jpg"/>
+                <div class="caption">9 of wands : Strength</div>
+                 <div class="label">Strength</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=62" class="content" src="./images/wands10.jpg"/>
+                <div class="caption">10 of wands : Oppression</div>
+                <div class="label">Oppression</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=70" class="content" src="./images/wandspr.jpg"/>
+                <div class="caption">Prince of wands : Large enthusiasm, impatience, thirst for adventure</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=74" class="content" src="./images/wandsprs.jpg"/>
+                <div class="caption">Princess of wands : Passion, sexual charisma, enthusiasm   </div>
+            </div>
+            <div class="item">
+                <img href="http://tarot4.me/wiki/index.php/Knight_of_Wands" class="content" src="./images/wandskn.jpg"/>
+                <div class="caption">Knight of wands : Strength of Will, individual potential, a dynamo </div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=78" class="content" src="./images/wandsqu.jpg"/>
+                <div class="caption">Queen of wands : Female dominance, strong will power, magnetic attraction</div>
+            </div>
+
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=23" class="content" src="./images/cups1.jpg"/>
+                <div class="caption">Ace of cups : Longing for union, merging, devotion</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=27" class="content" src="./images/cups2.jpg"/>
+                <div class="caption">2 of cups : Love</div>
+                <div class="label">Love</div>
+            </div>
+            <div class="item">
+                <img href="http://tarot4.me/wiki/index.php/Three_of_Cups" class="content" src="./images/cups3.jpg"/>
+                <div class="caption">3 of cups : Abundance</div>
+                <div class="label">Abundance</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=35" class="content" src="./images/cups4.jpg"/>
+                <div class="caption">4 of cups : Luxury</div>
+                <div class="label">Luxury</div>
+            </div>
+            <div class="item">
+                <img href="http://tarot4.me/wiki/index.php/Five_of_Cups" class="content" src="./images/cups5.jpg"/>
+                <div class="caption">5 of cups : Disappointment</div>
+                <div class="label">Disappointment</div>
+            </div>
+            <div class="item">
+                <img href="http://tarot4.me/wiki/index.php/Six_of_Cups" class="content" src="./images/cups6.jpg"/>
+                <div class="caption">6 of cups : Pleasure</div>
+                <div class="label">Pleasure</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=47" class="content" src="./images/cups7.jpg"/>
+                <div class="caption">7 of cups : Debauch</div>
+                <div class="label">Debuach</div>
+            </div>
+            <div class="item">
+                <img href="http://tarot4.me/wiki/index.php/Eight_of_Cups" class="content" src="./images/cups8.jpg"/>
+                <div class="caption">8 of cups : Indolence</div>
+                <div class="label">Indolence</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=55" class="content" src="./images/cups9.jpg"/>
+                <div class="caption">9 of cups : Happiness</div>
+                <div class="label">Pleasure</div>
+            </div>
+            <div class="item">
+                <img href="http://tarot4.me/wiki/index.php/Ten_of_Cups" class="content" src="./images/cups10.jpg"/>
+                <div class="caption">10 of cups : Satiety</div>
+                <div class="label">Satiety</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=67" class="content" src="./images/cupspr.jpg"/>
+                <div class="caption">Prince of cups : Devotion, sympathy, connection to the Higher Self</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=71" class="content" src="./images/cupsprs.jpg"/>
+                <div class="caption">Princess of cups : Exploration of inner worlds, intuition</div>
+            </div>
+            <div class="item">
+                <img href="http://tarot4.me/wiki/index.php/Knight_of_Cups" class="content" src="./images/cupskn.jpg"/>
+                <div class="caption">Knight of cups : Self-sacrifice, sympathy, helpfulness</div>
+            </div>
+            <div class="item">
+                <img href="http://tarot4.me/wiki/index.php/Queen_of_Cups" class="content" src="./images/cupsqu.jpg"/>
+                <div class="caption">Queen of cups : Feminine wisdom, blurring the boundaries of dreams</div>
+            </div>
+            
+            <div class="item">
+                <img href="http://tarot4.me/wiki/index.php/Ace_of_Swords" class="content" src="./images/swords1.jpg"/>
+                <div class="caption">Ace of swords : The objective mind, intellectual organization</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=29" class="content" src="./images/swords2.jpg"/>
+                <div class="caption">2 of swords : Peace</div>
+                <div class="label">Peace</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=33" class="content" src="./images/swords3.jpg"/>
+                <div class="caption">3 of swords : Misery</div>
+                <div class="label">Misery</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=37" class="content" src="./images/swords4.jpg"/>
+                <div class="caption">4 of swords : Truce</div>
+                <div class="label">Truce</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=41" class="content" src="./images/swords5.jpg"/>
+                <div class="caption">5 of swords : Loss</div>
+                <div class="label">Loss</div>
+            </div>
+            <div class="item">
+                <img href="http://tarot4.me/wiki/index.php/Six_of_Swords" class="content" src="./images/swords6.jpg"/>
+                <div class="caption">6 of swords : Science</div>
+                <div class="label">Science</div>
+            </div>
+            <div class="item">
+                <img href="http://tarot4.me/wiki/index.php/Seven_of_Swords" class="content" src="./images/swords7.jpg"/>
+                <div class="caption">7 of swords : Futility</div>
+                <div class="label">Futility</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=53" class="content" src="./images/swords8.jpg"/>
+                <div class="caption">8 of swords : Interference</div>
+                <div class="label">Interference</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=57" class="content" src="./images/swords9.jpg"/>
+                <div class="caption">9 of swords : Creulty</div>
+                <div class="label">Cruelty</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=61" class="content" src="./images/swords10.jpg"/>
+                <div class="caption">10 of swords : Demise</div>
+                <div class="label">Demise</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=69" class="content" src="./images/swordspr.jpg"/>
+                <div class="caption">Prince of swords : Quick solutions from a "smart talker"</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=73" class="content" src="./images/swordsprs.jpg"/>
+                <div class="caption">Princess of swords : Impulsiveness, tempestuousness</div>
+            </div>
+            <div class="item">
+                <img href="http://tarot4.me/wiki/index.php/Knight_of_Swords" class="content" src="./images/swordskn.jpg"/>
+                <div class="caption">Knight of swords : Astute, strategic, mentally agile</div>
+            </div>
+            <div class="item">
+                <img href="http://tarot4.me/wiki/index.php/Queen_of_Swords" class="content" src="./images/swordsqu.jpg"/>
+                <div class="caption">Queen of swords : Cool, calculating, independent and self-determining</div>
+            </div>
+
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=24" class="content" src="./images/disks1.jpg"/>
+                <div class="caption">Ace of disks : Pressing Earthly matters look for lasting bonds</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=28" class="content" src="./images/disks2.jpg"/>
+                <div class="caption">2 of disks : Change</div>
+                <div class="label">Change</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=32" class="content" src="./images/disks3.jpg"/>
+                <div class="caption">3 of disks : Work</div>
+                <div class="label">Work</div>
+            </div>
+            <div class="item">
+                <img href="http://tarot4.me/wiki/index.php/Four_of_Disks" class="content" src="./images/disks4.jpg"/>
+                <div class="caption">4 of disks : Power</div>
+                <div class="label">Power</div>
+            </div>
+            <div class="item">
+                <img href="http://tarot4.me/wiki/index.php/Five_of_Disks" class="content" src="./images/disks5.jpg"/>
+                <div class="caption">5 of disks : Worry</div>
+                <div class="label">Ordeal</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=44" class="content" src="./images/disks6.jpg"/>
+                <div class="caption">6 of disks : Success</div>
+                <div class="label">Success</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=48" class="content" src="./images/disks7.jpg"/>
+                <div class="caption">7 of disks : Failure</div>
+                <div class="label">Failure</div>
+            </div>
+            <div class="item">
+                <img href="http://tarot4.me/wiki/index.php/Eight_of_Disks" class="content" src="./images/disks8.jpg"/>
+                <div class="caption">8 of disks : Prudence</div>
+                <div class="label">Prudence</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=56" class="content" src="./images/disks9.jpg"/>
+                <div class="caption">9 of disks : Profit</div>
+                <div class="label">Profit</div>
+            </div>
+            <div class="item">
+                <img href="http://tarot4.me/wiki/index.php/Ten_of_Disks" class="content" src="./images/disks10.jpg"/>
+                <div class="caption">10 of disks : Wealth</div>
+                <div class="label">Wealth</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=68" class="content" src="./images/diskspr.jpg"/>
+                <div class="caption">Prince of disks : Reliability, pragmatism, diligence</div>
+            </div>
+            <div class="item">
+                <img href="http://tarot4.me/wiki/index.php/Princess_of_Disks" class="content" src="./images/disksprs.jpg"/>
+                <div class="caption">Princess of disks : Nourishing, motherhood, emotional security</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=64" class="content" src="./images/diskskn.jpg"/>
+                <div class="caption">Knight of disks : Material concerns, security, sober leadership</div>
+            </div>
+            <div class="item">
+                <img href="http://tarot4.me/wiki/index.php/Queen_of_Disks" class="content" src="./images/disksqu.jpg"/>
+                <div class="caption">Queen of disks : Stability in family, fertility, emotional sensibility</div>
+            </div>
+
+
+
+
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=9" class="content" src="./images/theadjustment.jpg"/>
+                <div class="caption">Adjustment </div>
+            </div>
+            <div class="item">
+                <img href="http://tarot4.me/wiki/index.php/The_Aeon" class="content" src="./images/theaeon.jpg"/>
+                <div class="caption">The Aeon : Revelation of abilities, recognition of correlations, awakening</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=15" class="content" src="./images/theart.jpg"/>
+                <div class="caption">Art : Combination of forces, realization, action based on accurate calculation</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=8" class="content" src="./images/thechariot.jpg"/>
+                <div class="caption">The Chariot : The Hero, spirit of conquest and adventure</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=14" class="content" src="./images/thedeath.jpg"/>
+                <div class="caption">Death : Change, voluntary or involuntary</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=16" class="content" src="./images/thedevil.jpg"/>
+                <div class="caption">The Devil : Blind impulse, irresistibly strong and unscrupulous, ambition</div>
+            </div>
+            <div class="item">
+                <img href="http://tarot4.me/wiki/index.php/The_Emperor" class="content" src="./images/theemperor.jpg"/>
+                <div class="caption">The Emperor : War, ambition, originality, confidence and megalomania</div>
+            </div>
+            <div class="item">
+                <img href="http://tarot4.me/wiki/index.php/The_Empress" class="content" src="./images/theempress.jpg"/>
+                <div class="caption">The Empress : Beauty, good fortune, graciousness, elegance, friendship</div>
+            </div>
+            <div class="item">
+                <img href="http://tarot4.me/wiki/index.php/The_Fool" class="content" src="./images/thefool.jpg"/>
+                <div class="caption">The Fool : Curiosity, experimentation, fantasy</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=11" class="content" src="./images/thefortune.jpg"/>
+                <div class="caption">Fortune : Alternation of fates (the wheel), a turn of events</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=13" class="content" src="./images/thehangman.jpg"/>
+                <div class="caption">The Hanged Man : Enforced sacrifice, punishment, loss</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=6" class="content" src="./images/theheirophant.jpg"/>
+                <div class="caption">The Hierophant : A spiritual leader, a search for hidden truth, enlightenment</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=10" class="content" src="./images/thehermit.jpg"/>
+                <div class="caption">The Hermit : Introversion, wisdom, retreat</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=7" class="content" src="./images/thelovers.jpg"/>
+                <div class="caption">The Lovers : Openness to inspiration, intuition, intelligence, second sight</div>
+            </div>
+            <div class="item">
+                <img href="http://tarot4.me/wiki/index.php/Lust" class="content" src="./images/thelust.jpg"/>
+                <div class="caption">Lust : Strength, vitality, animal instincts</div>
+            </div>
+            <div class="item">
+                <img href="http://tarot4.me/wiki/index.php/The_Magician_(Tarot_card)" class="content" src="./images/themagus.jpg"/>
+                <div class="caption">The Magus : Skill, wisdom, adroitness, elasticity, craft</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=19" class="content" src="./images/themoon.jpg"/>
+                <div class="caption">The Moon : Illusion, deception, bewilderment, hysteria</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=3" class="content" src="./images/thepriestess.jpg"/>
+                <div class="caption">The High Priestess : Alternation, increase and decrease, fluctuation</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=18" class="content" src="./images/thestar.jpg"/>
+                <div class="caption">The Star : Creative hope, renewal, devotion to the moment</div>
+            </div>
+            <div class="item">
+                <img href="http://tarot4.me/wiki/index.php/The_Sun_%28Tarot_card%29" class="content" src="./images/thesun.jpg"/>
+                <div class="caption">The Sun : Glory, riches, pleasure, truth, shamelessness, recovery from sickness</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=17" class="content" src="./images/thetower.jpg"/>
+                <div class="caption">The Tower : Quarrel, combat, danger, ruin, destruction of plans</div>
+            </div>
+            <div class="item">
+                <img href="http://www.digitarot.com/cgi-bin/digitarot/show_card.cgi?card_id=22" class="content" src="./images/theuniverse.jpg"/>
+                <div class="caption">The Universe : homecoming, resolution of karma, wholeness, cosmic oneness</div>
+            </div>
+
+            
+
+        </div>
+        <div class="globalCaption"></div>
+        <div class="scrollbar">
+            <div class="slider"><div class="position"></div></div>
+        </div>
+
+    </div>
+
+
+          <span><a title="random" onclick='playSound()' href='javascript:random()' id="random" style="text-align: left "><img src="random.png" /></a>  </span>
+          <span><a title="clear"  onclick='playSound()' href='javascript:clear()' id="delete" style="text-align: left "><img src="delete.png" /></a>  </span>
+          <span><a title="history"  href='javascript:history()' id="history" style="text-align: left "><img src="history.png" /></a>  </span>
+
+
+</body>
+</html>
